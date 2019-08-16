@@ -27,7 +27,7 @@ Plugin uses GNU autotools for its build system. You can build it as follows:
 ```
 $ ./autogen.sh
 $ ./configure
-$ make
+$ make -j
 $ make install
 ```
 
