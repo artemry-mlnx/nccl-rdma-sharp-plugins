@@ -1,8 +1,6 @@
 #!/bin/bash -leE
 
 SCRIPT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-echo "DEBUG: SCRIPT_DIR = ${SCRIPT_DIR}"
-
 . ${SCRIPT_DIR}/settings.sh
 
 GLOBAL_TEST_STATUS=0
@@ -118,37 +116,37 @@ export LD_LIBRARY_PATH="${NCCL_DIR}/lib:${NCCL_PLUGIN_DIR}/lib:${SHARP_DIR}/lib:
 ###############################################################################
 # Test 1
 ###############################################################################
-# (
-    # echo_hash_line
-    # echo "# Test 1..."
-    # echo_hash_line
+(
+    echo_hash_line
+    echo "# Test 1..."
+    echo_hash_line
 
-    # export LD_LIBRARY_PATH="${NCCL_DIR}/lib:${NCCL_PLUGIN_DIR}/lib:${SHARP_DIR}/lib:${LD_LIBRARY_PATH}"
+    export LD_LIBRARY_PATH="${NCCL_DIR}/lib:${NCCL_PLUGIN_DIR}/lib:${SHARP_DIR}/lib:${LD_LIBRARY_PATH}"
 
-    # MPIRUN_OPTIONS_SPECIFIC="\
-    # -x NCCL_LL_THRESHOLD=0 \
-    # -x NCCL_TREE_THRESHOLD=1000000000 \
-    # -x SHARP_COLL_LOG_LEVEL=3 \
-    # -x ENABLE_SHARP_COLL=1 \
-    # -x SHARP_COLL_OSTS_PER_GROUP=64 \
-    # -x SHARP_COLL_ENABLE_MCAST_TARGET=0 \
-    # -x SHARP_COLL_JOB_QUOTA_PAYLOAD_PER_OST=1024 \
-    # -x SHARP_COLL_JOB_QUOTA_OSTS=256 \
-    # -x SHARP_COLL_ENABLE_SAT=${ENABLE_SAT} \
-    # -x SHARP_COLL_SAT_THRESHOLD=1 \
-    # "
-    # mpirun \
-        # ${MPIRUN_OPTIONS_COMMON} \
-        # ${MPIRUN_OPTIONS_SPECIFIC} \
-        # ${MPI_APP}
-# )
-# if [ $? -ne 0 ]
-# then
-    # echo "# Test 1... failed"
-    # GLOBAL_TEST_STATUS=1
-# else
-    # echo "# Test 1... passed"
-# fi
+    MPIRUN_OPTIONS_SPECIFIC="\
+    -x NCCL_LL_THRESHOLD=0 \
+    -x NCCL_TREE_THRESHOLD=1000000000 \
+    -x SHARP_COLL_LOG_LEVEL=3 \
+    -x ENABLE_SHARP_COLL=1 \
+    -x SHARP_COLL_OSTS_PER_GROUP=64 \
+    -x SHARP_COLL_ENABLE_MCAST_TARGET=0 \
+    -x SHARP_COLL_JOB_QUOTA_PAYLOAD_PER_OST=1024 \
+    -x SHARP_COLL_JOB_QUOTA_OSTS=256 \
+    -x SHARP_COLL_ENABLE_SAT=${ENABLE_SAT} \
+    -x SHARP_COLL_SAT_THRESHOLD=1 \
+    "
+    mpirun \
+        ${MPIRUN_OPTIONS_COMMON} \
+        ${MPIRUN_OPTIONS_SPECIFIC} \
+        ${MPI_APP}
+)
+if [ $? -ne 0 ]
+then
+    echo "# Test 1... failed"
+    GLOBAL_TEST_STATUS=1
+else
+    echo "# Test 1... passed"
+fi
 
 ###############################################################################
 # Test 2
