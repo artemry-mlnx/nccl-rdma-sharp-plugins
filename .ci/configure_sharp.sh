@@ -315,6 +315,7 @@ then
     verify_sharp
 fi
 
+sudo chmod -R 777 ${CONFIGURE_SHARP_TMP_DIR}
 rm -rf ${CONFIGURE_SHARP_TMP_DIR}
 
 echo "PASS"
