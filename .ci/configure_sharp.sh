@@ -9,22 +9,11 @@ echo "INFO: SHARP_MANAGER_ACTION = ${SHARP_MANAGER_ACTION}"
 
 CFG_DIR="${SCRIPT_DIR}/cfg"
 HOSTFILE="${CFG_DIR}/$HOSTNAME/hostfile"
-export SHARP_CONF="${CFG_DIR}/$HOSTNAME/sharp_conf/"
-export SHARP_INI_FILE="/tmp/sharp_manager_$$.ini"
+export SHARP_CONF="/tmp/configure_sharp_$$"
+export SHARP_INI_FILE="${SHARP_CONF}/sharp_manager.ini"
 
-if [ ! -d "${SHARP_CONF}" ]
-then
-    echo "ERROR: SHARP_CONF (${SHARP_CONF}) does not exist or not accessible"
-    echo "FAIL"
-    exit 1
-fi
-
-if [ -f "${SHARP_INI_FILE}" ]
-then
-    echo "ERROR: SHARP_INI_FILE (${SHARP_INI_FILE}) does not exist or not accessible"
-    echo "FAIL"
-    exit 1
-fi
+mkdir -p ${SHARP_CONF}
+cp -R ${CFG_DIR}/$HOSTNAME/sharp_conf/* ${SHARP_CONF}
 
 if [ ! -f "${HOSTFILE}" ]
 then
@@ -320,6 +309,6 @@ then
     verify_sharp
 fi
 
-rm -f ${SHARP_INI_FILE}
+rm -rf ${SHARP_CONF}
 
 echo "PASS"
