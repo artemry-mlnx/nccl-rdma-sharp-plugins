@@ -7,9 +7,9 @@ SCRIPT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 SHARP_MANAGER_ACTION="${1:-restart}"
 echo "INFO: SHARP_MANAGER_ACTION = ${SHARP_MANAGER_ACTION}"
 
-CFG_DIR=`cd ${SCRIPT_DIR}/../cfg; pwd -P`
-HOSTFILE=${CFG_DIR}/$HOSTNAME/hostfile
-export SHARP_CONF=${CFG_DIR}/$HOSTNAME/sharp_conf/
+CFG_DIR="${SCRIPT_DIR}/cfg"
+HOSTFILE="${CFG_DIR}/$HOSTNAME/hostfile"
+export SHARP_CONF="${CFG_DIR}/$HOSTNAME/sharp_conf/"
 export SHARP_INI_FILE="/tmp/sharp_manager_$$.ini"
 
 if [ ! -d "${SHARP_CONF}" ]
