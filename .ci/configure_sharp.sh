@@ -139,7 +139,7 @@ verify_sharp() {
         -x ENABLE_SHARP_COLL=1 \
         -x SHARP_COLL_LOG_LEVEL=3 \
         -x LD_LIBRARY_PATH=${LD_LIBRARY_PATH} \
-        ${TMP_DIR}/sharp_coll_test \
+        ${CONFIGURE_SHARP_TMP_DIR}/sharp_coll_test \
             -d mlx5_0:1 \
             --iters $ITERS \
             --skip $SKIP \
@@ -163,7 +163,7 @@ verify_sharp() {
         -x ENABLE_SHARP_COLL=1 \
         -x SHARP_COLL_LOG_LEVEL=3 \
         -x LD_LIBRARY_PATH=${LD_LIBRARY_PATH} \
-        ${TMP_DIR}/sharp_coll_test \
+        ${CONFIGURE_SHARP_TMP_DIR}/sharp_coll_test \
             -d mlx5_0:1 \
             --iters $ITERS \
             --skip $SKIP \
@@ -189,7 +189,7 @@ verify_sharp() {
         -x SHARP_COLL_LOG_LEVEL=3 \
         -x SHARP_COLL_ENABLE_SAT=1 \
         -x LD_LIBRARY_PATH=${LD_LIBRARY_PATH} \
-        ${TMP_DIR}/sharp_coll_test \
+        ${CONFIGURE_SHARP_TMP_DIR}/sharp_coll_test \
             -d mlx5_0:1 \
             --iters $ITERS \
             --skip $SKIP \
