@@ -29,6 +29,9 @@ WORKSPACE="${WORKSPACE:-${TOP_DIR}}"
 CI_DIR="${WORKSPACE}/.ci"
 NCCL_PLUGIN_DIR="${WORKSPACE}/_install"
 
+#TODO W/A: there are some issues with SHARP from HPC-X
+SHARP_DIR="/.autodirect/mtrswgwork/artemry/work/sharp_debug/sharp/_install"
+
 if [ -z "${SHARP_DIR}" ]
 then
     if [ -z "${HPCX_SHARP_DIR}" ]

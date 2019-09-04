@@ -62,8 +62,8 @@ ${NCCL_TESTS_DIR}/build/all_reduce_perf \
     -w $WARMUP_ITER \
     -p 0 \
 "
-# TODO Test 2 hangs with SAT enabled
-ENABLE_SAT=0
+ENABLE_SAT=${ENABLE_SAT:-1}
+echo "INFO: ENABLE_SAT = ${ENABLE_SAT}"
 
 echo_hash_line() {
     echo "###############################################################################"
@@ -112,7 +112,6 @@ export LD_LIBRARY_PATH="${NCCL_DIR}/lib:${NCCL_PLUGIN_DIR}/lib:${SHARP_DIR}/lib:
 # Run NCCL-TESTS (MPI)
 ###############################################################################
 
-# TODO Test 1 does not work (segmentation fault)
 ###############################################################################
 # Test 1
 ###############################################################################

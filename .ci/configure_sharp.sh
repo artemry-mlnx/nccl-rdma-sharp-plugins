@@ -69,13 +69,6 @@ echo "INFO: SHARP_INI_FILE ${SHARP_INI_FILE} BEGIN"
 cat ${SHARP_INI_FILE}
 echo "INFO: SHARP_INI_FILE ${SHARP_INI_FILE} END"
 
-module load dev/cuda${CUDA_VERSION}
-module load hpcx-gcc
-
-SHARP_DIR="/.autodirect/mtrswgwork/artemry/work/sharp_debug/sharp/_install"
-# SHARP_DIR="${HPCX_SHARP_DIR}"
-echo "INFO: SHARP_DIR = ${SHARP_DIR}"
-
 check_opensm_status() {
     echo "Checking OpenSM status on ${SHARP_AM_NODE}..."
 
