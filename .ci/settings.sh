@@ -12,6 +12,7 @@ echo "INFO: CUDA_VERSION = ${CUDA_VERSION}"
 
 module load dev/cuda${CUDA_VERSION}
 module load hpcx-gcc
+module load ml/ci-tools
 
 TOP_DIR="$(git rev-parse --show-toplevel)"
 echo "INFO: TOP_DIR = ${TOP_DIR}"
@@ -28,9 +29,6 @@ WORKSPACE="${WORKSPACE:-${TOP_DIR}}"
 
 CI_DIR="${WORKSPACE}/.ci"
 NCCL_PLUGIN_DIR="${WORKSPACE}/_install"
-
-#TODO W/A: there are some issues with SHARP from HPC-X
-SHARP_DIR="/.autodirect/mtrswgwork/artemry/work/sharp_debug/sharp/_install"
 
 if [ -z "${SHARP_DIR}" ]
 then

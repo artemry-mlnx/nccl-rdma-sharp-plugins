@@ -55,7 +55,7 @@ pipeline {
         stage('Build nccl-rdma-sharp-plugins') {
             steps {
                 echo 'Building nccl-rdma-sharp-plugins...'
-                sh 'set -o pipefail; ${WORKSPACE}/.ci/build.sh 2>&1 | tee ${ARTEFACT_DIR}/build.log'
+                sh 'set -o pipefail; ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1 | tee ${ARTEFACT_DIR}/build_nccl_rdma_sharp_plugins.log'
             }
         }
         stage('Configure SHARP: startup') {
@@ -72,7 +72,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Test nccl-rdma-sharp-plugins') {
             steps {
                 echo 'Testing nccl-rdma-sharp-plugins...'
                 sh 'set -o pipefail; ${WORKSPACE}/.ci/run_nccl_test.sh 2>&1 | tee ${ARTEFACT_DIR}/run_nccl_test.log'
