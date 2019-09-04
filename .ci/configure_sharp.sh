@@ -7,12 +7,23 @@ SCRIPT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 SHARP_MANAGER_ACTION="${1:-restart}"
 echo "INFO: SHARP_MANAGER_ACTION = ${SHARP_MANAGER_ACTION}"
 
+echo "INFO: NFS_WORKSPACE = ${NFS_WORKSPACE}"
+
+if [ -z "${NFS_WORKSPACE}" ]
+then
+    echo "ERROR: NFS_WORKSPACE is not defined"
+    echo "FAIL"
+    exit 1
+fi
+
+CONFIGURE_SHARP_TMP_DIR="${NFS_WORKSPACE}/configure_sharp_$$"
+mkdir -p ${CONFIGURE_SHARP_TMP_DIR}
+
 CFG_DIR="${SCRIPT_DIR}/cfg"
 HOSTFILE="${CFG_DIR}/$HOSTNAME/hostfile"
-export SHARP_CONF="/tmp/configure_sharp_$$"
+export SHARP_CONF="${CONFIGURE_SHARP_TMP_DIR}"
 export SHARP_INI_FILE="${SHARP_CONF}/sharp_manager.ini"
 
-mkdir -p ${SHARP_CONF}
 cp -R ${CFG_DIR}/$HOSTNAME/sharp_conf/* ${SHARP_CONF}
 
 if [ ! -f "${HOSTFILE}" ]
@@ -105,10 +116,8 @@ verify_sharp() {
     export PATH="${SHARP_DIR}/bin:$PATH"
     export LD_LIBRARY_PATH="${SHARP_DIR}/lib:${LD_LIBRARY_PATH}"
 
-    TMP_DIR="`pwd`/verify_sharp_$$"
-    mkdir -p ${TMP_DIR}
-    cp ${SHARP_DIR}/share/sharp/examples/mpi/coll/* ${TMP_DIR}
-    cd ${TMP_DIR}
+    cp ${SHARP_DIR}/share/sharp/examples/mpi/coll/* ${CONFIGURE_SHARP_TMP_DIR}
+    cd ${CONFIGURE_SHARP_TMP_DIR}
     make CUDA=1 CUDA_HOME=${CUDA_HOME} SHARP_HOME="${SHARP_DIR}"
     if [ $? -ne 0 ]
     then
@@ -194,9 +203,6 @@ verify_sharp() {
         exit 1
     fi
     echo "Test 3... DONE"
-
-    cd - > /dev/null
-    rm -rf ${TMP_DIR}
 
     # Test 4: Without SAT
     echo "Test 4..."
@@ -309,6 +315,6 @@ then
     verify_sharp
 fi
 
-rm -rf ${SHARP_CONF}
+rm -rf ${CONFIGURE_SHARP_TMP_DIR}
 
 echo "PASS"
