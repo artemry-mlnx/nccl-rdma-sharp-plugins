@@ -7,7 +7,7 @@ then
     set -x
 fi
 
-CUDA_VERSION="${CUDA_VERSION:-10.1}"
+CUDA_VERSION="${CUDA_VERSION:-10.0}"
 echo "INFO: CUDA_VERSION = ${CUDA_VERSION}"
 
 module load dev/cuda${CUDA_VERSION}
