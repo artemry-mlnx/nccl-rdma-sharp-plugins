@@ -234,6 +234,7 @@ verify_sharp() {
         -x HCOLL_ML_DISABLE_REDUCE=1 \
         -x HCOLL_ENABLE_MCAST_ALL=1 \
         -x HCOLL_MCAST_NP=1 \
+        -x LD_LIBRARY_PATH=${LD_LIBRARY_PATH} \
         -x HCOLL_ENABLE_SHARP=2 \
         -x SHARP_COLL_LOG_LEVEL=3 \
         -x SHARP_COLL_GROUP_RESOURCE_POLICY=1 \
@@ -276,6 +277,7 @@ verify_sharp() {
         -x HCOLL_ML_DISABLE_REDUCE=1 \
         -x HCOLL_ENABLE_MCAST_ALL=1 \
         -x HCOLL_MCAST_NP=1 \
+        -x LD_LIBRARY_PATH=${LD_LIBRARY_PATH} \
         -x HCOLL_ENABLE_SHARP=2 \
         -x SHARP_COLL_LOG_LEVEL=3 \
         -x SHARP_COLL_GROUP_RESOURCE_POLICY=1 \
