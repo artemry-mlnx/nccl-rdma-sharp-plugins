@@ -162,7 +162,8 @@ verify_sharp() {
                 --skip $SKIP \
                 --mode perf \
                 --collectives allreduce,barrier"
-    echo -e "INFO: Test 1 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 1 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -189,7 +190,8 @@ verify_sharp() {
                 --mode perf \
                 --collectives allreduce \
                 -M cuda"
-    echo -e "INFO: Test 2 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 2 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -217,7 +219,8 @@ verify_sharp() {
                 --mode perf \
                 --collectives allreduce \
                 -s 4:536870912"
-    echo -e "INFO: Test 3 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 3 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -244,7 +247,8 @@ verify_sharp() {
                 --mode perf \
                 --collectives iallreduce \
                 -N 128"
-    echo -e "INFO: Test 4 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 4 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -272,7 +276,8 @@ verify_sharp() {
                 --collectives iallreduce \
                 -N 128 \
                 -M cuda"
-    echo -e "INFO: Test 5 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 5 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -301,7 +306,8 @@ verify_sharp() {
                 --collectives iallreduce \
                 -N 128 \
                 -s 4:131072"
-    echo -e "INFO: Test 6 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 6 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -346,7 +352,8 @@ verify_sharp() {
                         -x 100 \
                         -f \
                         -m 4096:4096"
-    echo -e "INFO: Test 7 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 7 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
@@ -392,7 +399,8 @@ verify_sharp() {
                         -x 100 \
                         -f \
                     -m 4096:4096"
-    echo -e "INFO: Test 8 command line:\n$(trim_multiple_spaces \"$CMD\")"
+    echo "INFO: Test 8 command line:"
+    trim_multiple_spaces "$CMD"
     $CMD
     if [ $? -ne 0 ]
     then
