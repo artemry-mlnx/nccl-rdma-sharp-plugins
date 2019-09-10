@@ -12,12 +12,13 @@ then
     exit 1
 fi
 
-if [ -z "${NCCL_RDMA_SHARP_PLUGINS_DIR}" ]
-then
-    echo "ERROR: NCCL_RDMA_SHARP_PLUGINS_DIR is not defined"
-    echo "FAIL"
-    exit 1
-fi
+# TODO debug
+# if [ -z "${NCCL_RDMA_SHARP_PLUGINS_DIR}" ]
+# then
+    # echo "ERROR: NCCL_RDMA_SHARP_PLUGINS_DIR is not defined"
+    # echo "FAIL"
+    # exit 1
+# fi
 
 if [ -z "${NCCL_TESTS_DIR}" ]
 then

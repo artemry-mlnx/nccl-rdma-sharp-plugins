@@ -25,6 +25,7 @@ pipeline {
         NCCL_GIT_URL                = "git@gitlab.com:Mellanox/nccl-sharp.git"
         NCCL_GIT_BRANCH             = "master"
         NCCL_DIR                    = "${NFS_WORKSPACE}/nccl"
+        // TODO debug
         // NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
         NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
     }
