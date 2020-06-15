@@ -25,13 +25,11 @@ spec:
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
             container('cuda') {
-                steps {
-                    echo 'Building nccl-rdma-sharp-plugins...'
-                    sh """#!/bin/bash
-                        set -o pipefail
-                        ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
-                        """
-                }
+                echo 'Building nccl-rdma-sharp-plugins...'
+                sh """#!/bin/bash
+                    set -o pipefail
+                    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                    """
             }
         }
     }
