@@ -1,7 +1,40 @@
-podTemplate (cloud:'sc-ipp-blossom-prod') {
+//podTemplate (cloud:'sc-ipp-blossom-prod') {
+//    node(POD_LABEL) {
+//        stage('Run shell') {
+//            sh 'echo blossom hello world'
+//        }
+//    }
+//}
+
+podTemplate (cloud:'sc-ipp-blossom-prod', yaml : """
+apiVersion: v1
+kind: Pod
+spec:
+    containers:
+    - name: cuda
+        image: nvidia/cuda
+        command:
+        - cat
+        restartPolicy: Never
+        tty: true
+    nodeSelector:
+        nodeType: cpu
+        kubernetes.io/os: linux
+""") {
     node(POD_LABEL) {
-        stage('Run shell') {
-            sh 'echo blossom hello world'
+        stage('Verify CPU Node') {
+            container('cuda') {
+                sh 'echo running on node with label nodeType: cpu'
+                // since pod is running on cpu type kubernetes node, nvidia-smi should failed, try catch to set build status
+                try {
+                    sh 'nvidia-smi'
+                    currentBuild.result = 'FAILURE'
+                }
+                catch(e) {
+                    sh 'echo expected failure'
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
         }
     }
 }
