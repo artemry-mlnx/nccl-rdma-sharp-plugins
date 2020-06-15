@@ -12,11 +12,11 @@ kind: Pod
 spec:
   containers:
   - name: cuda
-     image: nvidia/cuda
-     command:
-     - cat
-     restartPolicy: Never
-     tty: true
+    image: nvidia/cuda
+    command:
+    - cat
+    restartPolicy: Never
+    tty: true
   nodeSelector:
     nodeType: cpu
     kubernetes.io/os: linux
