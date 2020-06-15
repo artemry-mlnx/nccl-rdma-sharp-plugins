@@ -1,0 +1,7 @@
+podTemplate (cloud:'sc-ipp-blossom-prod') {
+    node(POD_LABEL) {
+        stage('Run shell') {
+            sh 'echo blossom hello world'
+        }
+    }
+}
