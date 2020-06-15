@@ -6,22 +6,44 @@
 //    }
 //}
 
-podTemplate (cloud:'sc-ipp-blossom-prod', yaml : """
+//podTemplate (cloud:'sc-ipp-blossom-prod', yaml : """
+//apiVersion: v1
+//kind: Pod
+//spec:
+//  containers:
+//  - name: cuda
+//    image: nvidia/cuda
+//    command:
+//    - cat
+//    restartPolicy: Never
+//    tty: true
+//  nodeSelector:
+//    nodeType: cpu
+//    kubernetes.io/os: linux
+//"""
+//) {
+podTemplate(cloud:'blossom-cloud', yaml: '''
 apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: cuda
-    image: nvidia/cuda
+  - name: docker
+    image: docker:19.03.1
     command:
-    - cat
-    restartPolicy: Never
-    tty: true
-  nodeSelector:
-    nodeType: cpu
-    kubernetes.io/os: linux
-"""
-) {
+    - sleep
+    args:
+    - 99d
+    env:
+      - name: DOCKER_HOST
+        value: tcp://localhost:2375
+  - name: docker-daemon
+    image: docker:19.03.1-dind
+    securityContext:
+      privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
+''') {
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
             container('cuda') {
