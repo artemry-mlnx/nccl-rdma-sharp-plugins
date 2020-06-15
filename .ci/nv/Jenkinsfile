@@ -25,6 +25,7 @@ spec:
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
             container('cuda') {
+                checkout scm
                 echo 'Building nccl-rdma-sharp-plugins...'
                 sh """#!/bin/bash
                     set -o pipefail
