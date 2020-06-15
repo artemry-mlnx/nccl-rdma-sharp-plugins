@@ -23,17 +23,14 @@ spec:
 """
 ) {
     node(POD_LABEL) {
-        stage('Verify CPU Node') {
+        stage('Build nccl-rdma-sharp-plugins') {
             container('cuda') {
-                sh 'echo running on node with label nodeType: cpu'
-                // since pod is running on cpu type kubernetes node, nvidia-smi should failed, try catch to set build status
-                try {
-                    sh 'nvidia-smi'
-                    currentBuild.result = 'FAILURE'
-                }
-                catch(e) {
-                    sh 'echo expected failure'
-                    currentBuild.result = 'SUCCESS'
+                steps {
+                    echo 'Building nccl-rdma-sharp-plugins...'
+                    sh """#!/bin/bash
+                        set -o pipefail
+                        ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                        """
                 }
             }
         }
