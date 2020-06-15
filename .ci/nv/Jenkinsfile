@@ -46,7 +46,7 @@ spec:
 ''') {
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
-            container('cuda') {
+            container('docker') {
                 checkout scm
                 echo 'Building nccl-rdma-sharp-plugins...'
                 sh """#!/bin/bash
