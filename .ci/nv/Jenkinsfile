@@ -22,7 +22,7 @@
 //    kubernetes.io/os: linux
 //"""
 //) {
-podTemplate(cloud:'blossom-cloud', yaml: '''
+podTemplate(cloud:'sc-ipp-blossom-prod', yaml: '''
 apiVersion: v1
 kind: Pod
 spec:
