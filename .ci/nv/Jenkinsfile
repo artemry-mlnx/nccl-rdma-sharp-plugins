@@ -10,17 +10,18 @@ podTemplate (cloud:'sc-ipp-blossom-prod', yaml : """
 apiVersion: v1
 kind: Pod
 spec:
-    containers:
-    - name: cuda
-        image: nvidia/cuda
-        command:
-        - cat
-        restartPolicy: Never
-        tty: true
-    nodeSelector:
-        nodeType: cpu
-        kubernetes.io/os: linux
-""") {
+  containers:
+  - name: cuda
+     image: nvidia/cuda
+     command:
+     - cat
+     restartPolicy: Never
+     tty: true
+  nodeSelector:
+    nodeType: cpu
+    kubernetes.io/os: linux
+"""
+) {
     node(POD_LABEL) {
         stage('Verify CPU Node') {
             container('cuda') {
