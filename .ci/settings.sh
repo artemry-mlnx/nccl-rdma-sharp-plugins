@@ -10,26 +10,26 @@ fi
 export CUDA_VER="${CUDA_VER:-10.2}"
 echo "INFO: CUDA_VER = ${CUDA_VER}"
 
-module load ml/ci-tools
+#module load ml/ci-tools
 
 # W/A for SHARP
 # CUDA 10.2 is the latest available version we would like to test, CUDA 10.1 is needed for SHARP
 # (due to HPC-X is buitl with CUDA 10.1).
 # CUDA 10.2 has priority in the env PATH/LD_LIBRARY_PATH.
-module load dev/cuda10.1
+#module load dev/cuda10.1
 
-module load "dev/cuda${CUDA_VER}"
+#module load "dev/cuda${CUDA_VER}"
 
 # TODO remove use HPC-X which is already inside the image
 #
-HPCX_UBUNTU_INSTALL_DIR=${HPCX_UBUNTU_INSTALL_DIR:-/.autodirect/mtrswgwork/artemry/ci_tools_do_not_remove/hpcx-v2.6.0-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-ubuntu18.04-x86_64/}
+#HPCX_UBUNTU_INSTALL_DIR=${HPCX_UBUNTU_INSTALL_DIR:-/.autodirect/mtrswgwork/artemry/ci_tools_do_not_remove/hpcx-v2.6.0-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-ubuntu18.04-x86_64/}
 # shellcheck source=/.autodirect/mtrswgwork/artemry/ci_tools_do_not_remove/hpcx-v2.6.0-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-ubuntu18.04-x86_64/hpcx-init.sh
-. "${HPCX_UBUNTU_INSTALL_DIR}/hpcx-init.sh"
-hpcx_load
+#. "${HPCX_UBUNTU_INSTALL_DIR}/hpcx-init.sh"
+#hpcx_load
 
 # It is needed to disable nccl_rdma_sharp_plugin libs from HPC-X
-LD_LIBRARY_PATH="${LD_LIBRARY_PATH//nccl_rdma_sharp_plugin/nccl_rdma_sharp_pluginX}"
-export LD_LIBRARY_PATH
+#LD_LIBRARY_PATH="${LD_LIBRARY_PATH//nccl_rdma_sharp_plugin/nccl_rdma_sharp_pluginX}"
+#export LD_LIBRARY_PATH
 
 TOP_DIR="$(git rev-parse --show-toplevel)"
 echo "INFO: TOP_DIR = ${TOP_DIR}"
