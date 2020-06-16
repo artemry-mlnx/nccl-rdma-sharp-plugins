@@ -1,76 +1,19 @@
-podTemplate (cloud:'sc-ipp-blossom-prod',
-volumes: [persistentVolumeClaim(mountPath: '/mlnx', claimName: 'sw-mellanox-storage', readOnly: false)]) {
-    
-     environment {
-        WORKSPACE = "/mlnx"
-        NFS_WORKSPACE_ROOT  = "${WORKSPACE}/data"
-        ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
-        // Note: ${NFS_WORKSPACE_ROOT} is cleaned up daily (5 day old files are removed)
-        NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
-        NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
-        NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
-    }
-
+podTemplate (
+    cloud:'sc-ipp-blossom-prod',
+    volumes: [persistentVolumeClaim(mountPath: '/sw-mellanox-storage', claimName: 'sw-mellanox-storage', readOnly: false)]
+) {
     node(POD_LABEL) {
-        stage('Preparations') {
-            steps {
-                echo 'Preparations...'
-                sh 'mkdir -p ${ARTEFACT_DIR}'
-                sh 'mkdir -p ${NFS_WORKSPACE}'
-            }
-        }
-        stage('Checkout NCCL tests') {
-            steps {
-                dir("${NCCL_RDMA_SHARP_PLUGINS_DIR}") {
-                    git branch: 'artemry-mlnx/work',
-                    url: 'https://github.com/artemry-mlnx/nccl-rdma-sharp-plugins.git'
-                }
-            }
-        }
         stage('Build nccl-rdma-sharp-plugins') {
-            steps {
-                echo 'Building nccl-rdma-sharp-plugins...'
-                sh """#!/bin/bash
-                    set -o pipefail
-                    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1 | tee ${ARTEFACT_DIR}/build_nccl_rdma_sharp_plugins.log
-                    """
-            }
+            checkout scm
+            echo 'Building nccl-rdma-sharp-plugins...'
+            sh "ls -al /"
+            sh "ls -al /sw-mellanox-storage"
+            sh "pwd"
+            sh "find ."
+            sh """#!/bin/bash
+                set -o pipefail
+                ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                """
         }
-        //stage('Configure SHARP: startup') {
-        //    steps {
-        //        echo 'Configure SHARP: startup...'
-        //        sh """#!/bin/bash
-        //            set -o pipefail
-        //            ${WORKSPACE}/.ci/configure_sharp.sh 2>&1 | tee ${ARTEFACT_DIR}/configure_sharp_startup.log
-        //            """
-        //    }
-        //}
-        //stage('Checkout NCCL tests') {
-        //    steps {
-        //        dir("${NCCL_TESTS_DIR}") {
-        //            git branch: 'master',
-        //            url: 'https://github.com/NVIDIA/nccl-tests.git'
-        //        }
-        //    }
-        //}
-        //stage('Test nccl-rdma-sharp-plugins') {
-        //    steps {
-        //        echo 'Testing nccl-rdma-sharp-plugins...'
-        //        sh """#!/bin/bash
-        //            set -o pipefail
-        //            ${WORKSPACE}/.ci/run_nccl_tests.sh 2>&1 | tee ${ARTEFACT_DIR}/run_nccl_test.log
-        //            """
-        //    }
-        //}
-        //stage('Configure SHARP: stop') {
-        //    steps {
-        //        echo 'Configure SHARP: stop...'
-        //        sh """#!/bin/bash
-        //            set -o pipefail
-        //            ${WORKSPACE}/.ci/configure_sharp.sh stop 2>&1 | tee ${ARTEFACT_DIR}/configure_sharp_stop.log
-        //            """
-        //    }
-        //}
     }
-    
 }
