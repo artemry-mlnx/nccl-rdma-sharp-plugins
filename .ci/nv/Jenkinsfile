@@ -26,6 +26,8 @@ spec:
 '''
 ) {
     environment {
+        DOCKER_REGISTRY_SERVER      = "gitlab-master.nvidia.com:5005"
+        DOCKER_REGISTRY_NAME        = "artemry/tester"
         ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
         NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
         NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
@@ -33,6 +35,28 @@ spec:
     }
 
     node(POD_LABEL) {
+        stage('Build base docker image') {
+            container('docker') {
+                withCredentials([usernamePassword(credentialsId: 'blossom-validation-git', passwordVariable: 'Password', usernameVariable: 'Username')]) {
+                    sh "docker --version"
+                    sh "docker ps"
+                    //By default, docker pulls images from Docker Hub.
+                    sh "docker pull ubuntu:latest"
+
+                    sh "docker login ${docker_registry_server} --username ${Username} --password ${Password}"
+                    // add extra build steps here if required
+                    // push to custom docker registry
+
+                    sh "docker tag ubuntu:latest ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
+                    sh "docker push ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
+                    sh "docker logout ${docker_registry_server}"
+
+                    // remove images
+                    sh "docker rmi ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
+                    sh "docker rmi ubuntu:latest"
+                }
+            }
+        }
         stage('Build nccl-rdma-sharp-plugins') {
             //container('ubuntu1804') {
             container('docker') {
