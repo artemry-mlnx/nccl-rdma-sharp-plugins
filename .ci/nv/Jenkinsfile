@@ -1,6 +1,7 @@
 podTemplate (
     cloud:'sc-ipp-blossom-prod',
-    volumes: [persistentVolumeClaim(mountPath: '/sw-mellanox-storage', claimName: 'sw-mellanox-storage', readOnly: false)]
+    volumes: [persistentVolumeClaim(mountPath: '/sw-mellanox-storage', claimName: 'sw-mellanox-storage', readOnly: false)],
+    containers: [containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat')])
 ) {
     environment {
         ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
@@ -11,20 +12,22 @@ podTemplate (
 
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
-            checkout scm
-            echo 'Building nccl-rdma-sharp-plugins...'
-            sh "ls -al /"
-            sh "mkdir -p /sw-mellanox-storage/tmp"
-            sh "ls -al /sw-mellanox-storage"
-            sh "id"
-            sh "pwd"
-            sh "find ."
-            echo "INFO: WORKSPACE = ${WORKSPACE}"
-            sh "find ${WORKSPACE}"
-            sh """#!/bin/bash
-                set -o pipefail
-                ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
-                """
+            container('maven') {
+                checkout scm
+                echo 'Building nccl-rdma-sharp-plugins...'
+                sh "ls -al /"
+                sh "mkdir -p /sw-mellanox-storage/tmp"
+                sh "ls -al /sw-mellanox-storage"
+                sh "id"
+                sh "pwd"
+                sh "find ."
+                echo "INFO: WORKSPACE = ${WORKSPACE}"
+                sh "find ${WORKSPACE}"
+                sh """#!/bin/bash
+                    set -o pipefail
+                    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                    """
+            }
         }
     }
 }
