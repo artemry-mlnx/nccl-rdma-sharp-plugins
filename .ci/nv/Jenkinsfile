@@ -1,7 +1,29 @@
 podTemplate (
     cloud:'sc-ipp-blossom-prod',
     volumes: [persistentVolumeClaim(mountPath: '/sw-mellanox-storage', claimName: 'sw-mellanox-storage', readOnly: false)],
-    containers: [containerTemplate(name: 'ubuntu1804', image: 'nvidia/cuda:10.2-devel-ubuntu18.04', ttyEnabled: true, command: 'cat')]
+    //containers: [containerTemplate(name: 'ubuntu1804', image: 'nvidia/cuda:10.2-devel-ubuntu18.04', ttyEnabled: true, command: 'cat')]
+    yaml: '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:19.03.1
+    command:
+    - sleep
+    args:
+    - 99d
+    env:
+      - name: DOCKER_HOST
+        value: tcp://localhost:2375
+  - name: docker-daemon
+    image: docker:19.03.1-dind
+    securityContext:
+      privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
+'''
 ) {
     environment {
         ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
@@ -12,7 +34,8 @@ podTemplate (
 
     node(POD_LABEL) {
         stage('Build nccl-rdma-sharp-plugins') {
-            container('ubuntu1804') {
+            //container('ubuntu1804') {
+            container('docker') {
                 checkout scm
                 echo 'Building nccl-rdma-sharp-plugins...'
                 sh "cat /etc/*release*"
