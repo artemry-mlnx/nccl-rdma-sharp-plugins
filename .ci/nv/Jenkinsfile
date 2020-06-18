@@ -14,8 +14,8 @@ podTemplate (
             checkout scm
             echo 'Building nccl-rdma-sharp-plugins...'
             sh "ls -al /"
-            //sh "mkdir -p /sw-mellanox-storage/tmp"
-            //sh "ls -al /sw-mellanox-storage"
+            sh "mkdir -p /sw-mellanox-storage/tmp"
+            sh "ls -al /sw-mellanox-storage"
             sh "id"
             sh "pwd"
             sh "find ."
