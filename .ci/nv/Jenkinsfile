@@ -41,27 +41,24 @@ spec:
                 def dkr_image = ''
                 checkout scm
                 dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.ubuntu18.04 --no-cache --network=host --rm --force-rm --label=tmp .")
-            }
-        }
-        stage('Build nccl-rdma-sharp-plugins') {
-            //container('ubuntu1804') {
-            container('docker') {
-                checkout scm
-                echo 'Building nccl-rdma-sharp-plugins...'
-                sh "cat /etc/*release*"
-                sh "printenv"
-                sh "ls -al /"
-                sh "mkdir -p /sw-mellanox-storage/tmp"
-                sh "ls -al /sw-mellanox-storage"
-                sh "id"
-                sh "pwd"
-                sh "find ."
-                echo "INFO: WORKSPACE = ${WORKSPACE}"
-                sh "find ${WORKSPACE}"
-                //sh """#!/bin/bash
-                //    set -o pipefail
-                //    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
-                //    """
+                dkr_image.inside("--network=host") {
+                    echo 'Building nccl-rdma-sharp-plugins...'
+                    sh "cat /etc/*release*"
+                    sh "cat /proc/1/cgroup"
+                    sh "printenv"
+                    sh "ls -al /"
+                    sh "mkdir -p /sw-mellanox-storage/tmp"
+                    sh "ls -al /sw-mellanox-storage"
+                    sh "id"
+                    sh "pwd"
+                    sh "find ."
+                    echo "INFO: WORKSPACE = ${WORKSPACE}"
+                    sh "find ${WORKSPACE}"
+                    //sh """#!/bin/bash
+                    //    set -o pipefail
+                    //    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                    //    """
+                }
             }
         }
     }
