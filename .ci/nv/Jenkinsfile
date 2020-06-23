@@ -39,7 +39,7 @@ spec:
         stage('Build base docker image') {
             container('docker') {
                 def dkr_image = ''
-                dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.ubuntu18.04 --no-cache --network=host --rm --force-rm --label=tmp --build-arg CUDA_VER=${CUDA_VER} .")
+                dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.ubuntu18.04 --no-cache --network=host --rm --force-rm --label=tmp .")
             }
         }
         stage('Build nccl-rdma-sharp-plugins') {
