@@ -37,24 +37,8 @@ spec:
     node(POD_LABEL) {
         stage('Build base docker image') {
             container('docker') {
-                withCredentials([usernamePassword(credentialsId: 'blossom-validation-git', passwordVariable: 'Password', usernameVariable: 'Username')]) {
-                    sh "docker --version"
-                    sh "docker ps"
-                    //By default, docker pulls images from Docker Hub.
-                    sh "docker pull ubuntu:latest"
-
-                    sh "docker login ${docker_registry_server} --username ${Username} --password ${Password}"
-                    // add extra build steps here if required
-                    // push to custom docker registry
-
-                    sh "docker tag ubuntu:latest ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
-                    sh "docker push ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
-                    sh "docker logout ${docker_registry_server}"
-
-                    // remove images
-                    sh "docker rmi ${docker_registry_server}/${docker_registry_name}/myubuntu:latest"
-                    sh "docker rmi ubuntu:latest"
-                }
+                def dkr_image = ''
+                dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.ubuntu18.04 --no-cache --network=host --rm --force-rm --label=tmp --build-arg CUDA_VER=${CUDA_VER} .")
             }
         }
         stage('Build nccl-rdma-sharp-plugins') {
@@ -72,10 +56,10 @@ spec:
                 sh "find ."
                 echo "INFO: WORKSPACE = ${WORKSPACE}"
                 sh "find ${WORKSPACE}"
-                sh """#!/bin/bash
-                    set -o pipefail
-                    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
-                    """
+                //sh """#!/bin/bash
+                //    set -o pipefail
+                //    ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                //    """
             }
         }
     }
