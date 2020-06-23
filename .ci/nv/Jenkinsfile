@@ -32,6 +32,7 @@ spec:
         NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
         NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
         NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
+        CUDA_VER                    = "10.2"
     }
 
     node(POD_LABEL) {
