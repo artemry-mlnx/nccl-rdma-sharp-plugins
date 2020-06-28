@@ -55,7 +55,7 @@ HOSTFILE=${CFG_DIR}/$HOSTNAME/hostfile
 
 if [ ! -d "${HPCX_DIR}" ]
 then
-    echo "ERROR: ${HPCX_DIR} does not exist or not accessible"
+    echo "ERROR: HPCX_DIR (${HPCX_DIR}) does not exist or not accessible"
     echo "FAIL"
     exit 1
 fi
