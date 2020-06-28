@@ -18,10 +18,6 @@ def tasks = [:]
 
 env.DOCKER_REGISTRY_SERVER      = "gitlab-master.nvidia.com:5005"
 env.DOCKER_REGISTRY_NAME        = "artemry/tester"
-env.ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
-env.NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
-env.NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
-env.NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
 env.CUDA_VER                    = "10.2"
 
 arch_distro_list.each {
