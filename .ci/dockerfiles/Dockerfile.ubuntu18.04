@@ -10,13 +10,20 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 ENV MLNX_OFED_VERSION=5.0-2.1.8.0
 ENV MOFED_DIR MLNX_OFED_LINUX-${MLNX_OFED_VERSION}-ubuntu18.04-x86_64
 ENV MOFED_SITE_PLACE MLNX_OFED-${MLNX_OFED_VERSION}
-ENV MOFED_IMAGE MLNX_OFED_LINUX-${MLNX_OFED_VERSION}-ubuntu18.04-x86_64.iso
+ENV MOFED_IMAGE MLNX_OFED_LINUX-${MLNX_OFED_VERSION}-ubuntu18.04-x86_64.tgz
 RUN wget --no-verbose http://content.mellanox.com/ofed/${MOFED_SITE_PLACE}/${MOFED_IMAGE} && \
     tar -xzvf ${MOFED_IMAGE} && \
-    ${MOFED_DIR}/mlnxofedinstall --user-space-only --without-fw-update --all -q --force && \
+    ${MOFED_DIR}/mlnxofedinstall \
+        --user-space-only \
+        --without-fw-update \
+        --all \
+        -q \
+        --skip-distro-check \
+        --force \
+        && \
     cd .. && \
     rm -rf ${MOFED_DIR} && \
-    rm -rf *.
+    rm -rf *.tgz
 
 # Install HPC-X
 ENV HPCX_DOCKER_INSTALL_DIR "/opt/hpcx"
