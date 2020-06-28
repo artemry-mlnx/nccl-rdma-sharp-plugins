@@ -1,65 +1,97 @@
-podTemplate (
-    cloud:'sc-ipp-blossom-prod',
-    volumes: [persistentVolumeClaim(mountPath: '/sw-mellanox-storage', claimName: 'sw-mellanox-storage', readOnly: false)],
-    //containers: [containerTemplate(name: 'ubuntu1804', image: 'nvidia/cuda:10.2-devel-ubuntu18.04', ttyEnabled: true, command: 'cat')]
-    yaml: '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: docker
-    image: docker:19.03.1
-    command:
-    - sleep
-    args:
-    - 99d
-    env:
-      - name: DOCKER_HOST
-        value: tcp://localhost:2375
-  - name: docker-daemon
-    image: docker:19.03.1-dind
-    securityContext:
-      privileged: true
-    env:
-      - name: DOCKER_TLS_CERTDIR
-        value: ""
-'''
-) {
-    environment {
-        DOCKER_REGISTRY_SERVER      = "gitlab-master.nvidia.com:5005"
-        DOCKER_REGISTRY_NAME        = "artemry/tester"
-        ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
-        NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
-        NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
-        NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
-        CUDA_VER                    = "10.2"
-    }
+#!/usr/bin/env groovy
 
-    node(POD_LABEL) {
-        stage('Build base docker image') {
-            container('docker') {
-                def dkr_image = ''
-                checkout scm
-                dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.ubuntu18.04 --no-cache --network=host --rm --force-rm --label=tmp .")
-                dkr_image.inside("--network=host") {
-                    echo 'Building nccl-rdma-sharp-plugins...'
-                    sh "cat /etc/*release*"
-                    sh "cat /proc/1/cgroup"
-                    sh "printenv"
-                    sh "ls -al /"
-                    sh "mkdir -p /sw-mellanox-storage/tmp"
-                    sh "ls -al /sw-mellanox-storage"
-                    sh "id"
-                    sh "pwd"
-                    sh "find ."
-                    echo "INFO: WORKSPACE = ${WORKSPACE}"
-                    sh "find ${WORKSPACE}"
-                    sh """#!/bin/bash
-                        set -o pipefail
-                        ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
-                        """
+//def arch_distro_list = [
+//    "x86_64:ubuntu16.04",
+//    "x86_64:ubuntu18.04",
+//    "x86_64:rhel7.5",
+//    "x86_64:rhel7.6",
+//    "x86_64:rhel7.7",
+//    "x86_64:centos7.7",
+//    "aarch64:ubuntu18.04"
+//]
+
+def arch_distro_list = [
+    "x86_64:ubuntu18.04",
+]
+
+def tasks = [:]
+
+env.DOCKER_REGISTRY_SERVER      = "gitlab-master.nvidia.com:5005"
+env.DOCKER_REGISTRY_NAME        = "artemry/tester"
+env.ARTEFACT_DIR                = "${WORKSPACE}/artefacts"
+env.NFS_WORKSPACE               = "${NFS_WORKSPACE_ROOT}/ml-nccl-rdma-sharp-plugins-pr/${BUILD_NUMBER}"
+env.NCCL_RDMA_SHARP_PLUGINS_DIR = "${NFS_WORKSPACE}/nccl-rdma-sharp-plugins"
+env.NCCL_TESTS_DIR              = "${NFS_WORKSPACE}/nccl-tests"
+env.CUDA_VER                    = "10.2"
+
+arch_distro_list.each {
+    def arch = it.split(":")[0]
+    def distro = it.split(":")[1]
+    tasks["${arch}:${distro}"] = {
+        podTemplate (
+            cloud:'sc-ipp-blossom-prod',
+            volumes: [
+                persistentVolumeClaim(
+                    mountPath: '/sw-mellanox-storage',
+                    claimName: 'sw-mellanox-storage',
+                    readOnly: false
+                )
+            ],
+            //containers: [containerTemplate(name: 'ubuntu1804', image: 'nvidia/cuda:10.2-devel-ubuntu18.04', ttyEnabled: true, command: 'cat')]
+            yaml: '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: docker
+            image: docker:19.03.1
+            command:
+            - sleep
+            args:
+            - 99d
+            env:
+              - name: DOCKER_HOST
+                value: tcp://localhost:2375
+          - name: docker-daemon
+            image: docker:19.03.1-dind
+            securityContext:
+              privileged: true
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: ""
+        '''
+        ) {
+            node(POD_LABEL) {
+                stage('Build base docker image') {
+                    container('docker') {
+                        def dkr_image = ''
+                        checkout scm
+                        dkr_image = docker.build("${BUILD_ID}", "--file ${WORKSPACE}/.ci/dockerfiles/Dockerfile.${distro} --no-cache --network=host --rm --force-rm --label=tmp .")
+                        dkr_image.inside("--network=host") {
+                            echo 'Building nccl-rdma-sharp-plugins...'
+                            sh "cat /etc/*release*"
+                            sh "cat /proc/1/cgroup"
+                            sh "printenv"
+                            sh "ls -al /"
+                            sh "mkdir -p /sw-mellanox-storage/tmp"
+                            sh "ls -al /sw-mellanox-storage"
+                            sh "id"
+                            sh "pwd"
+                            sh "find ."
+                            echo "INFO: WORKSPACE = ${WORKSPACE}"
+                            sh "find ${WORKSPACE}"
+                            sh """#!/bin/bash
+                                set -o pipefail
+                                ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
+                                """
+                        }
+                    }
                 }
             }
         }
     }
+}
+
+timestamps {
+    parallel tasks_build
 }
