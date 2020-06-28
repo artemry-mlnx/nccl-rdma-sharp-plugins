@@ -46,12 +46,12 @@ WORKSPACE="${WORKSPACE:-${TOP_DIR}}"
 CFG_DIR="${WORKSPACE}/.ci/cfg"
 HOSTFILE=${CFG_DIR}/$HOSTNAME/hostfile
 
-if [ ! -f "${HOSTFILE}" ]
-then
-    echo "ERROR: ${HOSTFILE} doesn't exist or not accessible"
-    echo "FAIL"
-    exit 1
-fi
+#if [ ! -f "${HOSTFILE}" ]
+#then
+#    echo "ERROR: ${HOSTFILE} doesn't exist or not accessible"
+#    echo "FAIL"
+#    exit 1
+#fi
 
 if [ ! -d "${HPCX_DIR}" ]
 then
