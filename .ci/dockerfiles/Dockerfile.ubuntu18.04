@@ -3,12 +3,7 @@ FROM nvidia/cuda:${CUDA_VER}-devel-ubuntu18.04
 
 # DEBIAN_FRONTEND=noninteractive needed to avoid interactive questions during tzdata (installed as a dependency) installation
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
-    environment-modules \
-    git \
-    g++ \
-    make \
-    rsync \
-    tcl \
+    wget \
     && \
     rm -rf /var/lib/apt/lists/*
 
