@@ -12,6 +12,7 @@ RUN apt update && apt install -y \
     && \
     rm -rf /var/lib/apt/lists/*
 
+ARG CUDA_VER=10.2
 ENV CUDA_HOME=/usr/local/cuda-${CUDA_VER}/
 
 ENV MLNX_OFED_VERSION=5.0-2.1.8.0

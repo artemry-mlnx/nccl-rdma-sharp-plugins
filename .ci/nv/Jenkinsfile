@@ -7,11 +7,12 @@
 //    "x86_64:rhel7.6",
 //    "x86_64:rhel7.7",
 //    "x86_64:centos7.7",
-//    "aarch64:ubuntu18.04"
+//    "aarch64:ubuntu18.04",
 //]
 
 def arch_distro_list = [
     "x86_64:ubuntu18.04",
+    "x86_64:rhel7.7",
 ]
 
 def tasks = [:]
@@ -58,7 +59,7 @@ arch_distro_list.each {
         '''
         ) {
             node(POD_LABEL) {
-                stage('Build base docker image') {
+                stage('Build nccl-rdma-sharp-plugins') {
                     container('docker') {
                         def dkr_image = ''
                         checkout scm
