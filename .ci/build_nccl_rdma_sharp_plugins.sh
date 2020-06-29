@@ -1,4 +1,4 @@
-#!/bin/bash -leE
+#!/bin/bash -leEx
 
 SCRIPT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 cd "${SCRIPT_DIR}"
