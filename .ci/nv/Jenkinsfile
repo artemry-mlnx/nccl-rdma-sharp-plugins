@@ -60,7 +60,7 @@ arch_distro_list.each {
         '''
         ) {
             node(POD_LABEL) {
-                stage('Build nccl-rdma-sharp-plugins') {
+                stage("Build nccl-rdma-sharp-plugins on ${arch}:${distro}") {
                     container('docker') {
                         def dkr_image = ''
                         checkout scm
