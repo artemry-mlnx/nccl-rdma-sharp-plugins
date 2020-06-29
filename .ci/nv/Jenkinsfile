@@ -88,6 +88,4 @@ arch_distro_list.each {
     }
 }
 
-timestamps {
-    parallel tasks_build
-}
+parallel tasks
