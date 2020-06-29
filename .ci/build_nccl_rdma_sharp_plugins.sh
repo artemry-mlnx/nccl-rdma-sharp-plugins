@@ -10,6 +10,9 @@ echo "INFO: NCCL_RDMA_SHARP_PLUGINS_DIR = ${NCCL_RDMA_SHARP_PLUGINS_DIR}"
 
 cd "${WORKSPACE}"
 
+AUTOMAKE_JOBS=$(nproc)
+export AUTOMAKE_JOBS
+
 if ! "${WORKSPACE}/autogen.sh"; then
     echo "ERROR: ${WORKSPACE}/autogen.sh failed"
     echo "FAIL"
