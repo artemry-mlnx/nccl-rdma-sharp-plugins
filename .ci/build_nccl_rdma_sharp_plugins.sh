@@ -19,6 +19,8 @@ if ! "${WORKSPACE}/autogen.sh"; then
     exit 1
 fi
 
+find "${HPCX_SHARP_DIR}"
+
 if ! "${WORKSPACE}/configure" \
     --prefix="${NCCL_RDMA_SHARP_PLUGINS_DIR}" \
     --with-cuda="${CUDA_HOME}" \
