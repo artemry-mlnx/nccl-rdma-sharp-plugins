@@ -27,9 +27,12 @@ echo "INFO: CUDA_VER = ${CUDA_VER}"
 #. "${HPCX_UBUNTU_INSTALL_DIR}/hpcx-init.sh"
 #hpcx_load
 
+. "/opt/hpcx/${HPCX_PACKAGE_NAME}/hpcx-init.sh"
+hpcx_load
+
 # It is needed to disable nccl_rdma_sharp_plugin libs from HPC-X
-#LD_LIBRARY_PATH="${LD_LIBRARY_PATH//nccl_rdma_sharp_plugin/nccl_rdma_sharp_pluginX}"
-#export LD_LIBRARY_PATH
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH//nccl_rdma_sharp_plugin/nccl_rdma_sharp_pluginX}"
+export LD_LIBRARY_PATH
 
 TOP_DIR="$(git rev-parse --show-toplevel)"
 echo "INFO: TOP_DIR = ${TOP_DIR}"

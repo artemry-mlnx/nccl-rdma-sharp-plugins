@@ -16,9 +16,11 @@ def arch_distro_list = [
 
 def tasks = [:]
 
-env.DOCKER_REGISTRY_SERVER      = "gitlab-master.nvidia.com:5005"
-env.DOCKER_REGISTRY_NAME        = "artemry/tester"
-env.CUDA_VER                    = "10.2"
+env.DOCKER_REGISTRY_SERVER  = "gitlab-master.nvidia.com:5005"
+env.DOCKER_REGISTRY_NAME    = "artemry/tester"
+env.CUDA_VER                = "10.2"
+env.HPCX_PACKAGE_NAME       = "hpcx-v2.6.0-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-ubuntu18.04-x86_64"
+env.DEBUG                   = "true"
 
 arch_distro_list.each {
     def arch = it.split(":")[0]
