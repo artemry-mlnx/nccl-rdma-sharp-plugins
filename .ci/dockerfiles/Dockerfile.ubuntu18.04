@@ -1,8 +1,13 @@
 ARG CUDA_VER=10.2
 FROM nvidia/cuda:${CUDA_VER}-devel-ubuntu18.04
 
-# DEBIAN_FRONTEND=noninteractive needed to avoid interactive questions during tzdata (installed as a dependency) installation
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
+RUN apt update && apt install -y \
+    git \
+    libcap2 \
+    lsb-release \
+    perl \
+    python \
+    sudo \
     wget \
     && \
     rm -rf /var/lib/apt/lists/*
