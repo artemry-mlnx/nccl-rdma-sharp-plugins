@@ -76,6 +76,7 @@ arch_distro_list.each {
                             sh "find ."
                             echo "INFO: WORKSPACE = ${WORKSPACE}"
                             sh "find ${WORKSPACE}"
+                            sh "find ${HPCX_SHARP_DIR}"
                             sh """#!/bin/bash
                                 set -o pipefail
                                 ${WORKSPACE}/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1
