@@ -7,7 +7,7 @@ then
     set -x
 fi
 
-export CUDA_VER="${CUDA_VER:-10.2}"
+export CUDA_VER="${CUDA_VER:-11.0}"
 echo "INFO: CUDA_VER = ${CUDA_VER}"
 
 #module load ml/ci-tools
@@ -16,7 +16,7 @@ echo "INFO: CUDA_VER = ${CUDA_VER}"
 # CUDA 10.2 is the latest available version we would like to test, CUDA 10.1 is needed for SHARP
 # (due to HPC-X is buitl with CUDA 10.1).
 # CUDA 10.2 has priority in the env PATH/LD_LIBRARY_PATH.
-module load dev/cuda10.1
+#module load dev/cuda10.1
 
 module load "dev/cuda${CUDA_VER}"
 
