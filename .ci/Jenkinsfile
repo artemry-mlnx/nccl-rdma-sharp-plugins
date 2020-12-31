@@ -80,7 +80,7 @@ node("master") {
                     credentialsId: "549927eb-7f38-4a8f-997a-81dd63605782",
                     name: "origin",
                     refspec: "+refs/heads/*:refs/remotes/origin/* +refs/pull/*:refs/remotes/origin/pr/*",
-                    url: "https://github.com/artemry-mlnx/vptp_services"
+                    url: "https://github.com/artemry-mlnx/nccl-rdma-sharp-plugins"
                 ]]
              ])
         }
