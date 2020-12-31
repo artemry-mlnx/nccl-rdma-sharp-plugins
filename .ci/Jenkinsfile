@@ -65,7 +65,7 @@ arch_distro_list.each {
                         echo 'Building nccl-rdma-sharp-plugins...'
                         sh """#!/bin/bash
                             set -o pipefail
-                            ${WORKSPACE}/nccl-rdma-sharp-plugins/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1 | tee ${ARTEFACT_DIR}/build_nccl_rdma_sharp_plugins_${arch}_${distro}.log
+                            WORKSPACE=${WORKSPACE}/nccl-rdma-sharp-plugins ${WORKSPACE}/nccl-rdma-sharp-plugins/.ci/build_nccl_rdma_sharp_plugins.sh 2>&1 | tee ${ARTEFACT_DIR}/build_nccl_rdma_sharp_plugins_${arch}_${distro}.log
                             """
                     }
                 }
