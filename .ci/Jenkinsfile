@@ -20,6 +20,18 @@ env.ARTEFACT_DIR = "${NFS_WORKSPACE}/artefacts"
 arch_distro_list.each {
     def arch = it.split(":")[0]
     def distro = it.split(":")[1]
+    def nodeSelector = ""
+    switch (arch) {
+        case "x86_64":
+            nodeSelector = "kubernetes.io/arch=amd64"
+            break
+        case "aarch64":
+            nodeSelector = "kubernetes.io/arch=arm64"
+            break
+        case "ppc64le":
+            nodeSelector = "kubernetes.io/arch=ppc64le"
+            break
+    }
     tasks_build["${arch}:${distro}"] = {
         def container_name="${arch}-${distro}-${BUILD_ID}".replaceAll("[\\.:/_]","")
         echo "INFO: container_name = ${container_name}"
@@ -27,6 +39,7 @@ arch_distro_list.each {
             cloud: "swx-k8s-spray",
             runAsUser: "0",
             runAsGroup: "0",
+            nodeSelector: nodeSelector,
             containers: [
                 containerTemplate(
                     name: "${container_name}",
