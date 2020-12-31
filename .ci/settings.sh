@@ -43,15 +43,16 @@ HOSTNAME=$(hostname -s)
 echo "INFO: HOSTNAME = $HOSTNAME"
 
 WORKSPACE="${WORKSPACE:-${TOP_DIR}}"
+# shellcheck disable=SC2034
 CFG_DIR="${WORKSPACE}/.ci/cfg"
-HOSTFILE=${CFG_DIR}/$HOSTNAME/hostfile
-
-if [ ! -f "${HOSTFILE}" ]
-then
-    echo "ERROR: ${HOSTFILE} doesn't exist or not accessible"
-    echo "FAIL"
-    exit 1
-fi
+#HOSTFILE=${CFG_DIR}/$HOSTNAME/hostfile
+#
+#if [ ! -f "${HOSTFILE}" ]
+#then
+#    echo "ERROR: ${HOSTFILE} doesn't exist or not accessible"
+#    echo "FAIL"
+#    exit 1
+#fi
 
 if [ ! -d "${HPCX_DIR}" ]
 then
